@@ -1,0 +1,118 @@
+@startuml
+title
+  例外ツリー
+endtitle
+
+interface Throwable <<php7>> #cfc
+
+package 例外 {
+  class Exception #fc0
+  Throwable <|.. Exception
+
+  class ErrorException #fc0 {
+    # serverity:int
+  }
+  Exception <|-right- ErrorException
+}
+
+package SPL例外 {
+  class LogicException #fc0
+  Exception <|--- LogicException
+  note left of LogicException
+    プログラムのバグ。
+    やってはいけないことをした。
+    コンパイル時にわかるもの。
+  endnote
+
+  class BadFunctionCallException
+  LogicException <|-- BadFunctionCallException
+  note bottom of BadFunctionCallException
+    未定義の関数をcallbackに指定した。
+    引数がないなど。
+  end note
+
+  class BadMethodCallException
+  BadFunctionCallException <|-- BadMethodCallException
+
+  class DomainException
+  LogicException <|-- DomainException
+  note bottom of DomainException
+    ドメインに値が従わない。
+    画像拡張子にmp3が来たなど。
+  endnote
+
+  class InvalidArgumentException #fc0
+  LogicException <|-- InvalidArgumentException
+  note bottom of InvalidArgumentException: 引数の型が期待と違った
+
+  class LengthException
+  LogicException <|-- LengthException
+  note bottom of LengthException
+    長さが無効。
+  endnote
+
+  class OutOfRangeException
+  LogicException <|-- OutOfRangeException
+  note bottom of OutOfRangeException
+    無効なindex。
+  endnote
+
+
+  class RuntimeException #fc0
+  Exception <|--- RuntimeException
+  note left of RuntimeException
+    実行時例外。
+    コンパイル時点ではわからないもの。
+  endnote
+
+  class OutOfBoundsException
+  RuntimeException <|-- OutOfBoundsException
+  note bottom of OutOfBoundsException: 値が有効なkeyでなかった
+
+  class OverflowException
+  RuntimeException <|-- OverflowException
+  note bottom of OverflowException: 上限を超えてコンテナに追加しようとした
+
+  class RangeException
+  RuntimeException <|-- RangeException
+  note bottom of RangeException: Overflow/Underflow以外の実行時範囲エラー
+  DomainException .. RangeException : 同系統
+
+  class UnderflowException
+  RuntimeException <|-- UnderflowException
+  note bottom of UnderflowException: 下限を超えてコンテナから削除しようとした
+
+  class UnexpectedValueException
+  RuntimeException <|-- UnexpectedValueException
+  note bottom of UnexpectedValueException
+    期待しない値。
+    メソッドの戻り値が期待しない型や値だったなど。
+  endnote
+}
+
+package 内部エラー {
+  class Error <<php7>> #cfc
+  Throwable <|.. Error
+
+  class TypeError <<php7>> #cfc
+  Error <|-- TypeError
+  note bottom of TypeError
+    引数もしくは戻り値が変
+  endnote
+
+  class ArgumentCountError <<php7.1>> #cfc
+  TypeError <|-- ArgumentCountError
+
+  class ArithmeticError <<php7>> #cfc
+  Error <|-- ArithmeticError
+  class DivisionByZeroError <<php7>> #cfc
+  ArithmeticError <|-- DivisionByZeroError
+
+  class AssertionError <<php7>> #cfc
+  Error <|-- AssertionError
+  class CompileError <<php7.3>> #cfc
+  Error <|-- CompileError
+  class ParseError <<php7>> #cfc
+  Error <|-- ParseError
+}
+@enduml
