@@ -1,0 +1,133 @@
+@startuml
+title
+  iterable
+endtitle
+
+interface iterable
+interface Traversable
+iterable <|-- Traversable
+object array
+iterable <|.. array
+
+interface ArrayAccess
+
+interface IteratorAggregate
+Traversable <|-- IteratorAggregate
+class ArrayObject
+IteratorAggregate <|.. ArrayObject
+
+interface Iterator
+Traversable <|-- Iterator
+
+interface SeekableIterator
+Iterator <|-- SeekableIterator
+
+interface RecursiveIterator
+Iterator <|-- RecursiveIterator
+
+interface OuterIterator
+Iterator <|-- OuterIterator
+
+class EmptyIterator
+Iterator <|.. EmptyIterator
+
+class SplPriorityQueue
+Iterator <|.. SplPriorityQueue
+
+class MultipleIterator
+Iterator <|.. MultipleIterator
+
+class Generator
+Iterator <|.. Generator
+
+class SplDoublyLinkedList
+Iterator <|.. SplDoublyLinkedList
+class SplStack
+SplDoublyLinkedList <|.. SplStack
+class SplQueue
+SplDoublyLinkedList <|.. SplQueue
+
+class SplObjectStorage
+Iterator <|.. SplObjectStorage
+
+class SplHeap
+Iterator <|.. SplHeap
+class SplMinHeap
+SplHeap <|.. SplMinHeap
+class SplMaxHeap
+SplHeap <|.. SplMaxHeap
+
+class SplFixedArray
+Iterator <|.. SplFixedArray
+
+class DirectoryIterator
+SeekableIterator <|.. DirectoryIterator
+SplFileInfo <|-- DirectoryIterator
+
+class SplFileObject
+SplFileInfo <|-- SplFileObject
+
+class FileSystemIterator
+DirectoryIterator <|-- FileSystemIterator
+
+class GlobIterator
+FileSystemIterator <|-- GlobIterator
+
+class RecursiveDirectoryIterator
+FileSystemIterator <|-- RecursiveDirectoryIterator
+RecursiveIterator <|.. RecursiveDirectoryIterator
+
+
+class ArrayIterator
+SeekableIterator <|.. ArrayIterator
+class RecursiveArrayIterator
+ArrayIterator <|-- RecursiveArrayIterator
+RecursiveIterator <|.. RecursiveArrayIterator
+
+class RecursiveIteratorIterator
+OuterIterator <|.. RecursiveIteratorIterator
+class RecursiveTreeIterator
+RecursiveIteratorIterator <|-- RecursiveTreeIterator
+
+class IteratorIterator
+OuterIterator <|.. IteratorIterator
+
+class CashingIterator
+IteratorIterator <|-- CashingIterator
+class RecursiveCachingIterator
+CashingIterator <|-- RecursiveCachingIterator
+RecursiveIterator <.. RecursiveCachingIterator
+
+class FilterIterator
+IteratorIterator <|-- FilterIterator
+class RecursiveFilterIterator
+FilterIterator <|-- RecursiveFilterIterator
+RecursiveIterator <.. RecursiveFilterIterator
+class ParentIterator
+RecursiveFilterIterator <|-- ParentIterator
+
+class CallbackFilterIterator
+FilterIterator <|-- CallbackFilterIterator
+class RecursiveCallbackFilterIterator
+CallbackFilterIterator <|-- RecursiveCallbackFilterIterator
+RecursiveIterator <|.. RecursiveCallbackFilterIterator
+
+class RegexIterator
+FilterIterator <|-- RegexIterator
+class RecursiveRegexIterator
+RegexIterator <|-- RecursiveRegexIterator
+RecursiveIterator <|.. RecursiveRegexIterator
+
+class LimitIterator
+IteratorIterator <|-- LimitIterator
+
+class AppendIterator
+IteratorIterator <|-- AppendIterator
+
+class InfiniteIterator
+IteratorIterator <|-- InfiniteIterator
+
+class NoRewindIterator
+IteratorIterator <|-- NoRewindIterator
+
+@enduml
