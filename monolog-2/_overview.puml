@@ -1,0 +1,53 @@
+@startuml
+
+interface Psr.Log.LoggerInterface {
+  + emergency(message:array, context:array)
+  + alert(message:array, context:array)
+  + critical(message:array, context:array)
+  + error(message:array, context:array)
+  + warning(message:array, context:array)
+  + notice(message:array, context:array)
+  + info(message:array, context:array)
+  + debug(message:array, context:array)
+  + trace(message:array, context:array)
+  + log(level:mixed, message:array, context:array)
+}
+
+class Monolog.Logger
+Psr.Log.LoggerInterface <|.. Monolog.Logger
+
+
+namespace Monolog.Handler {
+  interface HandlerInterface {
+    + isHandling(record:array) :bool
+    + handle(record:array) :bool
+    + handleBatch(records:array) :void
+    + close() :void
+  }
+
+  interface FormattableHandlerInterface {
+    + setFormatter(Monolog.Formatter.FormatterInterface) :self
+    + getFormatter() :Monolog.Formatter.FormatterInterface
+  }
+
+  interface ProcessableHandlerInterface {
+      + pushProcessor(callback:Callable) :HandlerInterface
+      + popProcessor() :Callable
+    }
+}
+
+interface Monolog.Processor.ProcessorInterface {
+  + __invoke(record:array) :array
+}
+
+interface Monolog.Formatter.FormatterInterface {
+  + format(record:array) :mixed
+  + formatBatch(records:array) :mixed
+}
+
+Monolog.Logger o-- Monolog.Handler.HandlerInterface
+Monolog.Logger o-- Monolog.Processor.ProcessorInterface
+Monolog.Handler.ProcessableHandlerInterface o-- Monolog.Processor.ProcessorInterface
+Monolog.Formatter.FormatterInterface --o Monolog.Handler.FormattableHandlerInterface
+
+@enduml

@@ -1,0 +1,25 @@
+@startuml
+
+namespace Monolog.Formatter {
+  interface FormatterInterface {
+    + format(record:array) :mixed
+    + formatBatch(records:array) :mixed
+  }
+
+  class LineFormatter
+  FormatterInterface <|.. LineFormatter
+  class FluentdFormatter
+  FormatterInterface <|.. FluentdFormatter
+  class ElasticSearchFormatter
+  FormatterInterface <|.. ElasticSearchFormatter
+  class HtmlFormatter
+  FormatterInterface <|.. HtmlFormatter
+  class JsonFormatter
+  FormatterInterface <|.. JsonFormatter
+  class NormalizerFormatter
+  FormatterInterface <|.. NormalizerFormatter
+  class ScalarFormatter
+  FormatterInterface <|.. ScalarFormatter
+}
+
+@enduml

@@ -1,0 +1,60 @@
+@startuml
+
+namespace Monolog.Handler {
+  interface HandlerInterface {
+    + isHandling(record:array) :bool
+    + handle(record:array) :bool
+    + handleBatch(records:array) :void
+    + close() :void
+  }
+  abstract Handler
+  HandlerInterface <|.. Handler
+
+  interface FormattableHandlerInterface {
+    + setFormatter(Monolog.Formatter.FormatterInterface) :self
+    + getFormatter() :Monolog.Formatter.FormatterInterface
+  }
+  class FormattableHandlerTrait <<(T,green) Trait>>
+  FormattableHandlerInterface -- FormattableHandlerTrait
+
+  interface ProcessableHandlerInterface {
+    + pushProcessor(callback:Callable) :HandlerInterface
+    + popProcessor() :Callable
+  }
+  class ProcessableHandlerTrait <<(T,green) Trait>>
+  ProcessableHandlerInterface -- ProcessableHandlerTrait
+
+  abstract AbstractHandler
+  Handler <|-- AbstractHandler
+  Monolog.ResettableInterface <|.. Handler
+
+  abstract AbstractProcessingHandler
+  AbstractHandler <|-- AbstractProcessingHandler
+  ProcessableHandlerInterface <|.. AbstractProcessingHandler
+  FormattableHandlerInterface <|.. AbstractProcessingHandler
+
+  class StreamHandler
+  AbstractProcessingHandler <|-- StreamHandler
+
+  class RotatingFileHandler
+  StreamHandler <|-- RotatingFileHandler
+
+  class ElasticSearchHandler
+  AbstractProcessingHandler <|-- ElasticSearchHandler
+
+  class PsrHandler
+  AbstractHandler <|-- PsrHandler
+  FormattableHandlerInterface <|.. PsrHandler
+
+  class RedisHandler
+  AbstractProcessingHandler <|-- RedisHandler
+
+  class SamplingHandler
+  AbstractHandler <|-- SamplingHandler
+  ProcessableHandlerInterface <|.. SamplingHandler
+
+  class NoopHandler
+  Handler <|-- NoopHandler
+}
+
+@enduml

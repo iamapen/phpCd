@@ -1,0 +1,36 @@
+@startuml
+
+namespace Monolog.Processor {
+  interface ProcessorInterface {
+    + __invoke(record:array) :array
+  }
+
+  class WebProcessor
+  ProcessorInterface <|.. WebProcessor
+
+  class HostnameProcessor
+  ProcessorInterface <|.. HostnameProcessor
+  class ProcessIdProcessor
+  ProcessorInterface <|.. ProcessIdProcessor
+
+  class IntrospectionProcessor
+  ProcessorInterface <|.. IntrospectionProcessor
+  class PsrLogMessageProcessor
+  ProcessorInterface <|.. PsrLogMessageProcessor
+
+  abstract MemoryProcessor
+  ProcessorInterface <|.. MemoryProcessor
+  class MemoryPreakUsageProcessor
+  MemoryProcessor <|-- MemoryPreakUsageProcessor
+
+  class GitProcessor
+  ProcessorInterface <|.. GitProcessor
+  class MercurialProcessor
+  ProcessorInterface <|.. MercurialProcessor
+
+  class TagProcessor
+  ProcessorInterface <|.. TagProcessor
+  class UidProcessor
+  ProcessorInterface <|.. UidProcessor
+}
+@enduml

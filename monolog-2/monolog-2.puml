@@ -1,0 +1,41 @@
+@startuml
+
+interface Psr.Log.LoggerInterface {
+  + emergency(message:array, context:array)
+  + alert(message:array, context:array)
+  + critical(message:array, context:array)
+  + error(message:array, context:array)
+  + warning(message:array, context:array)
+  + notice(message:array, context:array)
+  + info(message:array, context:array)
+  + debug(message:array, context:array)
+  + trace(message:array, context:array)
+}
+
+!include handler.puml
+!include processor.puml
+
+namespace Monolog {
+  class DateTimeImmutable
+  php.DateTimeImmutable <|-- DateTimeImmutable
+  php.JsonSerializable <|.. DateTimeImmutable
+
+  interface ResettableInterface
+
+  class Logger
+  Psr.Log.LoggerInterface <|.. Logger
+  ResettableInterface <|.. Logger
+  Logger o-- Monolog.Handler.HandlerInterface
+  Logger o-- Monolog.Processor.ProcessorInterface
+
+  class Utils
+
+  class Registry
+  class SignalHandler
+  class ErrorHandler
+}
+
+!include formatter.puml
+Monolog.Formatter.FormatterInterface --o Monolog.Handler.FormattableHandlerTrait
+
+@enduml

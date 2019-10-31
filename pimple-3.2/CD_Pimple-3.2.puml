@@ -1,0 +1,69 @@
+@startuml
+
+namespace php {
+  interface ArrayAccess
+  interface Iterator
+  class InvalidArgumentException
+  class RuntimeException
+}
+
+namespace Pimple {
+
+  class Container
+  php.ArrayAccess <|.. Container
+
+  class ServiceIterator
+  php.Iterator <|.. ServiceIterator
+  Container -o ServiceIterator
+
+  interface ServiceProviderInterface {
+    + register(pimple:Container)
+  }
+
+  namespace Exception {
+    class ExpectedInvokableException
+    php.InvalidArgumentException <--- ExpectedInvokableException
+    Psr.Container.ContainerExceptionInterface <|.. ExpectedInvokableException
+
+    class FrozenServiceException
+    php.RuntimeException <|--- FrozenServiceException
+    Psr.Container.ContainerExceptionInterface <|.. FrozenServiceException
+
+    class InvalidServiceIdentifierException
+    php.InvalidArgumentException <|--- InvalidServiceIdentifierException
+    Psr.Container.NotFoundExceptionInterface <|.. InvalidServiceIdentifierException
+
+    class UnknownIdentifierException
+    php.InvalidArgumentException <|--- InvalidServiceIdentifierException
+    Psr.Container.NotFoundExceptionInterface <|.. InvalidServiceIdentifierException
+  }
+
+  namespace Psr11 {
+    class Container {
+      + construct(pimple:Pimple.Container)
+      + get(id:string) :mixed
+      + has(id:string) :bool
+    }
+    Psr.Container.ContainerInterface <|.. Container
+
+    class ServiceLocator {
+      - container :Pimple.Container
+      - aliases :string[]
+      + construct(pimple:Pimple.Container, ids:string)
+      + get(id:string) :mixed
+      + has(id:string) :bool
+    }
+    Psr.Container.ContainerInterface <|.. ServiceLocator
+    Container -o ServiceLocator
+  }
+}
+
+namespace Psr.Container {
+  interface ContainerInterface {
+    + get(id:string) :mixed
+    + has(id:string) :bool
+  }
+  interface ContainerExceptionInterface
+  interface NotFoundExceptionInterface
+}
+@enduml
